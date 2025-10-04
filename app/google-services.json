@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "372900304711",
+    "project_id": "mycampusmap-c3c8a",
+    "storage_bucket": "mycampusmap-c3c8a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372900304711:android:4ca6412c16edf7a5c61e62",
+        "android_client_info": {
+          "package_name": "com.example.mycampusmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372900304711-vqqdo9v1lsb3vvei8qacvmaqfvk248lh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mycampusmap",
+            "certificate_hash": "69f886f660d2066ad441ca15b31e92700f1a4da1"
+          }
+        },
+        {
+          "client_id": "372900304711-sed3j96vp6159dms4au8e71urnfg3ccj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHyUSCIm6VpIyHwuUiZ14MxZu7dNuayxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372900304711-sed3j96vp6159dms4au8e71urnfg3ccj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

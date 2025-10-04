@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mycampusmap</string>
+        <string name="welcome_message">Welcome to Campus Map</string>
+        <string name="explore_map">Explore Map</string>
+        <string name="preferences">Preferences</string>
+        <string name="support">Support</string>
+        <string name="footer_text">© 2025 Campus Map. All rights reserved.</string>
+
+
+
+</resources>

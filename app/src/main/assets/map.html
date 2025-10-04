@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <style>
+        html, body {
+                  height: 100%;
+                  margin: 0;
+                  font-family: 'Poppins', sans-serif;
+                  background-color: rgb(37, 43, 50); /* Match the logo's background color */
+
+                  flex-direction: column; /* Ensures footer placement at the bottom */
+          justify-content: space-between; /* Pushes footer to the bottom */
+
+              }
+
+
+              
+               /* Splash Screen */
+              #splash {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgb(37, 43, 50); /* Adjusted to match logo background */
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  color: #ffffff; /* White text for contrast */
+                  z-index: 1000;
+                  text-align: center;
+              animation: pulse 2s infinite, fadeZoomOut 2s 2s forwards; /* Combine pulse and zoom out */
+              }
+
+              #splash img {
+                  width: 150px;
+                  height: auto;
+                  margin-bottom: 20px;
+
+              }
+              #splash p {
+    margin-top: -40px; /* Adjust this value to move the text up */
+    font-size: 20px; /* You can adjust this if needed */
+}
+
+
+              @keyframes pulse {
+              0% {
+                  transform: scale(1);
+              }
+              50% {
+                  transform: scale(1.05);
+              }
+              100% {
+                  transform: scale(1);
+              }
+          }
+
+          /* Ripple Effect */
+
+
+          /* Fade and Zoom Out */
+          @keyframes fadeZoomOut {
+              0% {
+                  transform: scale(1);
+                  opacity: 1;
+              }
+              100% {
+                  transform: scale(0.5);
+                  opacity: 0;
+              }
+          }
+
+           #loginPage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(37, 43, 50);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #loginForm {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        #loginForm h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4e8df5;
+        }
+
+        #loginForm input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        #loginForm input::placeholder {
+            color: #b0b3b8;
+        }
+
+        #loginForm button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, #1e3a8a, #4e8df5);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #loginForm button:hover {
+            background: linear-gradient(to right, #4e8df5, #1e3a8a);
+        }
+
+        #loginForm p {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #b0b3b8;
+        }
+
+        #loginForm a {
+            color: #4e8df5;
+            text-decoration: none;
+        }
+
+        #loginForm a:hover {
+            text-decoration: underline;
+        }
+
+        /* Signup Page Styles */
+        #signupPage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(37, 43, 50);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #signupForm {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        #signupForm h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4e8df5;
+        }
+
+        #signupForm input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        #signupForm input::placeholder {
+            color: #b0b3b8;
+        }
+
+        #signupForm button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, #1e3a8a, #4e8df5);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #signupForm button:hover {
+            background: linear-gradient(to right, #4e8df5, #1e3a8a);
+        }
+
+        #signupForm p {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #b0b3b8;
+        }
+
+        #signupForm a {
+            color: #4e8df5;
+            text-decoration: none;
+        }
+
+        #signupForm a:hover {
+            text-decoration: underline;
+        }
+
+         /* Sidebar for Search */
+/* Sidebar Styling */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -340px; /* Ensures it is fully hidden */
+    width: 300px; /* Sidebar width */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out; /* Smooth slide animation */
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+
+}
+
+/* Ensure Sidebar is fully hidden */
+.sidebar-hidden {
+    transform: translateX(-320px); /* Move it completely out of view */
+}
+
+/* Show sidebar when toggled */
+.sidebar-visible {
+    transform: translateX(320px); /* Move it into view */
+}
+
+
+#sidebar input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#sidebar ul li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Sidebar Close Button */
+#closeSidebar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    float: right;
+    cursor: pointer;
+}
+
+/* Sidebar Open Button */
+#openSidebar {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1100;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Hide Sidebar Button When Sidebar is Open */
+.sidebar-open #openSidebar {
+    opacity: 0;
+    pointer-events: none;
+}
+#searchBox {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#placeList {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#placeList li {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+#placeList li:hover {
+    background: #f0f0f0;
+}
+.leaflet-control-zoom {
+    position: absolute !important;
+    bottom: 5px !important; /* Move to bottom */
+    left: 5px !important; /* Move to left */
+}
+
+
+
+              #dashboard {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  width: 100%;
+                  height: 100%;
+                  max-width: 400px;
+
+                  margin: auto;
+                  background-color: rgb(37, 43, 50); /* Match the logo's background color */
+
+
+                  border-radius: 20px;
+                  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+                  padding: 30px;
+                  overflow: hidden;
+                  text-align: center;
+                  box-sizing: border-box;
+
+              }
+
+              #dashboard h1 {
+                  font-size: 32px;
+                  color: #4e8df5;
+                  margin-bottom: 20px;
+                  font-weight: 700;
+                      text-align: center;
+
+              }
+
+              .nav-button {
+                  display: flex;
+                  align-items: center;
+                  justify-content: flex-start;
+                  width: 100%;
+                  max-width: 350px;
+                  margin: 10px 0;
+                  padding: 15px;
+                  background: linear-gradient(to right, #1e3a8a, #4e8df5);
+                  border: none;
+                  border-radius: 12px;
+                  color: white;
+                  font-size: 18px;
+                  cursor: pointer;
+                  transition: transform 0.2s, box-shadow 0.2s;
+                  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+              }
+
+              .nav-button img {
+                  width: 35px;
+                  height: 35px;
+                  margin-right: 15px;
+              }
+
+              .nav-button:hover {
+                  background: linear-gradient(to right, #4e8df5, #1e3a8a);
+                  transform: translateY(-3px);
+                  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+              }
+
+              #footer {
+          position: absolute; /* Ensures footer stays at the bottom */
+          bottom: 0;
+          left: 0;
+          width: 100%; /* Stretches footer across the entire screen width */
+          font-size: 14px;
+          color: #b0b3b8;
+              background-color: rgb(37, 43, 50); /* Match the logo's background color */
+          padding: 10px 0;
+          box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+          text-align: center;
+      }
+
+
+              #footer a {
+                  color: #1e3a8a;
+                  text-decoration: none;
+              }
+
+              #footer a:hover {
+                  text-decoration: underline;
+
+              }
+
+            .card {
+
+          bottom: 0;
+          left: 0;
+          width: 100%; /* Stretches footer across the entire screen width */
+          font-size: 14px;
+          color: #6c757d;
+              background-color: rgb(37, 43, 50); /* Match the logo's background color */
+          padding: 10px 0;
+          box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+          text-align: center;
+              cursor: pointer;
+              transition: transform 0.2s;
+              color: #ffffff;
+          }
+
+          .card:hover {
+              transform: translateY(-5px);
+          }
+
+          .card img {
+              width: 50px;
+              height: 50px;
+              margin-bottom: 10px;
+          }
+
+          .card h2 {
+              margin: 10px 0 5px;
+              color: #ffffff;
+          }
+
+          .card p {
+              color: #b0b3b8;
+          }
+
+
+
+              /* Map View */
+      #mapContainer {
+                  display: none; /* Initially hidden */
+                  height: 100%;
+                      width: 100%;
+
+              }
+
+              #map {
+                  height: 100%;
+                      width: 100%;
+
+              }
+
+              #fab {
+                  position: absolute;
+                  bottom: 20px;
+                  right: 20px;
+                  z-index: 1000;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 15px;
+              }
+
+              #fab button {
+                  background-color: #007bff;
+                  color: white;
+                  border: none;
+                  border-radius: 50%;
+                  width: 50px;
+                  height: 50px;
+                  font-size: 18px;
+                  cursor: pointer;
+                  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+              }
+
+              #fab button:hover {
+                  background-color: #0056b3;
+              }
+
+              #routeInfo {
+                  position: absolute;
+                  bottom: 80px;
+                  left: 10px;
+                  background: white;
+                  padding: 10px;
+                  z-index: 1000;
+                  display: none;
+                  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+              }
+    </style>
+</head>
+<body>
+
+
+<!-- Splash Screen -->
+<div id="splash">
+    <img src="campusmapapplogo.png" alt="Campus Map Logo" />
+    <p>Campus Map</p>
+</div>
+
+<!-- Login Page -->
+<!-- Login Page -->
+<div id="loginPage">
+    <div id="loginForm">
+        <h2>Login</h2>
+        <div id="loginMessage" style="color: red; display: none;"></div> <!-- Message Box -->
+        <label for="username"></label>
+        <input type="text" id="username" placeholder="Username" />
+        <label for="password"></label>
+        <input type="password" id="password" placeholder="Password" />
+        <button onclick="login()">Login</button>
+        <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+    </div>
+</div>
+
+<!-- Signup Page -->
+<div id="signupPage" style="display: none;">
+    <div id="signupForm">
+        <h2>Sign Up</h2>
+        <div id="signupMessage" style="color: green; display: none;"></div> <!-- Message Box -->
+        <label for="signupUsername"></label>
+        <input type="text" id="signupUsername" placeholder="Username" />
+        <label for="signupPassword"></label>
+        <input type="password" id="signupPassword" placeholder="Password" />
+        <button onclick="signup()">Sign Up</button>
+        <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+</div>
+
+
+<!-- Dashboard -->
+<div id="dashboard" class="hidden">
+    <h1>Welcome to Campus Map</h1>
+    <button class="nav-button" onclick="navigateTo('map')">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/map.png" alt="Map Icon">
+        <span>Explore Map</span>
+    </button>
+    <button class="nav-button" onclick="navigateTo('settings')">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/settings.png" alt="Settings Icon">
+        <span>Preferences</span>
+    </button>
+    <button class="nav-button" onclick="navigateTo('help')">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/help.png" alt="Help Icon">
+        <span>Support</span>
+    </button>
+    <div class="card">
+        <img src="https://img.icons8.com/ios-filled/50/007bff/map.png" alt="Map Icon">
+        <h2>Explore</h2>
+        <p>Discover new places on campus.</p>
+    </div>
+
+    <div id="footer">
+        <p>&copy; 2025 <a href="#">Campus Map</a>. All rights reserved.</p>
+    </div>
+
+
+
+</div>
+
+
+
+<!-- Map View -->
+<div id="mapContainer">
+    <div id="map"></div>
+    <!-- Search Sidebar -->
+    <div id="sidebar">
+        <button id="closeSidebar" onclick="toggleSidebar()">✖</button>
+        <label for="searchBox"></label><input type="text" id="searchBox" placeholder="Search place..." onkeyup="filterPlaces()">
+        <ul id="placeList"></ul>
+    </div>
+
+    <div id="fab">
+        <button id="openSidebar" onclick="toggleSidebar()">☰</button>
+
+        <button onclick="centerOnCurrentLocation()" title="Center Map">&#128269;</button>
+        <button onclick="toggleRouting()" title="Toggle Routing">&#10133;</button>
+    </div>
+</div>
+
+<div id="routeInfo">
+    <span id="distance"></span><br>
+    <span id="duration"></span>
+</div>
+
+<script>
+    var map;
+var userMarker;
+var currentLatLng;
+var routingControl;
+var routingEnabled = false;
+var destinationMarker;
+
+// Declare auth globally
+setTimeout(() => {
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'flex'; // Show login page
+    }, 2000);
+
+    // Function to show login page
+    function showLogin() {
+        document.getElementById('signupPage').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'flex';
+    }
+
+    // Function to show signup page
+    function showSignup() {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('signupPage').style.display = 'flex';
+    }
+function showMessage(elementId, message, color) {
+    const messageElement = document.getElementById(elementId);
+    messageElement.style.display = "block";
+    messageElement.style.color = color;
+    messageElement.innerText = message;
+    setTimeout(() => { messageElement.style.display = "none"; }, 3000); // Hide after 3 seconds
+}
+    // Signup function
+function signup() {
+    const username = document.getElementById('signupUsername').value;
+    const password = document.getElementById('signupPassword').value;
+
+    if (username && password) {
+        Android.saveCredentials(username, password); // Save credentials via Android interface
+        showMessage("signupMessage", "Signup successful! Please login.", "green");
+        showLogin();
+    } else {
+        showMessage("signupMessage", "Please fill in all fields.", "red");
+    }
+}
+
+// Login function
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const storedUsername = Android.getUsername(); // Retrieve username via Android interface
+    const storedPassword = Android.getPassword(); // Retrieve password via Android interface
+
+    if (username === storedUsername && password === storedPassword) {
+            showMessage("loginMessage", "Login successful!", "green");
+
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+    } else {
+        showMessage("loginMessage", "No saved credentials found. Please sign up first.", "red");
+    }
+}
+
+    // Navigation function
+    function navigateTo(view) {
+        const dashboard = document.getElementById('dashboard');
+        dashboard.style.opacity = 1;
+
+        if (view === 'map') {
+            dashboard.style.transition = 'opacity 0.5s ease';
+            dashboard.style.opacity = 0;
+
+            setTimeout(() => {
+                dashboard.style.display = 'none';
+                document.getElementById('mapContainer').style.display = 'block';
+                initMap();
+            }, 500);
+        } else if (view === 'settings') {
+            alert('Settings page is under development.');
+        } else if (view === 'help') {
+            alert('Help page is under development.');
+        }
+    }
+
+    // Initialize map
+    function initMap() {
+    var defaultLatLng = [26.8439, 75.5652];
+
+    map = L.map('map', {
+        center: defaultLatLng,
+        zoom: 17,
+        maxZoom: 19,
+        minZoom: 16
+    });
+
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    });
+    var osmHot = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors, Humanitarian OpenStreetMap Team'
+    });
+
+    var osmDe = L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors, OSM Germany'
+    });
+
+    var esriSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19, // Fully zoomable
+        attribution: 'Tiles &copy; Esri'
+    });
+
+    var cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19, // Fully zoomable
+        attribution: '&copy; CartoDB'
+    });
+
+    var cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19, // Fully zoomable
+        attribution: '&copy; CartoDB'
+    });
+
+
+
+
+    // **Set Default Layer**
+    osm.addTo(map);
+
+    // **Layer Control**
+    var baseMaps = {
+        "OpenStreetMap": osm,
+        "OSM HOT (Humanitarian)": osmHot,
+        "OSM DE (Germany)": osmDe,
+        "Esri Satellite": esriSatellite,
+        "Carto Light": cartoLight,
+        "Carto Dark": cartoDark
+
+    };
+
+    L.control.layers(baseMaps).addTo(map); // Add layer switcher control
+
+    L.control.zoom({
+        position: 'bottomleft' // Move zoom buttons to bottom left
+    }).addTo(map);
+
+    // Red Marker Icon
+    var redIcon = L.icon({
+        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        iconSize: [40, 40]
+    });
+
+    // Predefined Places with Markers (Hidden Initially)
+    var places = [
+        { name: "Quess Mess & Gym complex", lat: 26.841318, lng: 75.561562 },
+        { name: "Bluedove Mess", lat: 26.840476, lng: 75.561796 },
+        { name: "B7 Block", lat: 26.841868, lng: 75.560880 },
+        { name: "Football Turf", lat: 26.841827, lng: 75.561360 },
+        { name: "Clubhouse", lat: 26.841729, lng: 75.561175 },
+        { name: "B7 Basketball court", lat: 26.841940, lng: 75.561299 },
+        { name: "B7 Badminton court", lat: 26.842024, lng: 75.561181 },
+        { name: "B6 Block", lat: 26.842272, lng: 75.561642 },
+        { name: "B2 Block", lat: 26.842170, lng: 75.562162 },
+        { name: "B5 Block", lat: 26.841835, lng: 75.561826 },
+        { name: "B4 Block", lat: 26.841380, lng: 75.562200 },
+        { name: "B3 Block", lat: 26.841610, lng: 75.562332 },
+        { name: "B1 Block", lat: 26.841854, lng: 75.562959 },
+        { name: "B1 Badminton court", lat: 26.841624, lng: 75.562889 },
+        { name: "G1 Block", lat: 26.840867, lng: 75.563561 },
+        { name: "G3 Block", lat: 26.840662, lng: 75.562962 },
+        { name: "G2 Block", lat: 26.840729, lng: 75.562645 },
+        { name: "G4 Block", lat: 26.840547, lng: 75.562157 },
+        { name: "B1 Basketball court", lat: 26.842165, lng: 75.562546 },
+        { name: "B2 Volleyball court", lat: 26.842385, lng: 75.562702 },
+        { name: "G4 Badminton court", lat: 26.840439, lng: 75.562356 },
+        { name: "Garden", lat: 26.840251, lng: 75.563286 },
+        { name: "Subway (Ghs side)", lat: 26.841815, lng: 75.563310 },
+        { name: "Subway (college side)", lat: 26.842102, lng: 75.563661 },
+        { name: "Academic Block 1 (AB1)", lat: 26.842570, lng: 75.564524 },
+        { name: "Grand Staircase", lat: 26.842560, lng: 75.565486 },
+        { name: "Old mess", lat: 26.843029, lng: 75.565244 },
+        { name: "AB1 mess", lat: 26.842528, lng: 75.564385 },
+        { name: "Nothing Before Cafe (NBC)", lat: 26.843511, lng: 75.563222 },
+        { name: "Academic Block 3 (AB3)", lat: 26.844084, lng: 75.564137 },
+        { name: "Academic Block 2 (AB2)", lat: 26.843172, lng: 75.566108 },
+        { name: "Workshop Building", lat: 26.843818, lng: 75.566893 },
+        { name: "Admin Block", lat: 26.841673, lng: 75.565905 },
+        { name: "Library", lat: 26.841466, lng: 75.565953 },
+        { name: "Laundry", lat: 26.840298, lng: 75.561513 },
+        { name: "G1 Common Room", lat: 26.841035, lng: 75.563377 }
+    ];
+
+    var markers = {}; // Store markers but do not add them to the map initially
+
+    places.forEach(place => {
+        var marker = L.marker([place.lat, place.lng], { icon: redIcon })
+            .bindPopup(place.name); // Do not add marker to map initially
+
+        markers[place.name.toLowerCase()] = {
+            marker: marker,
+            visible: false  // Track marker visibility
+        };
+    });
+
+    // Populate Sidebar List
+    var placeList = document.getElementById("placeList");
+    places.forEach(place => {
+        var li = document.createElement("li");
+        li.textContent = place.name;
+        li.onclick = function () {
+            togglePlaceMarker(place.name);
+        };
+        placeList.appendChild(li);
+    });
+
+    // Function to Filter Places in Search
+    window.filterPlaces = function () {
+        var input = document.getElementById("searchBox").value.toLowerCase();
+        var listItems = document.getElementById("placeList").getElementsByTagName("li");
+
+        for (var i = 0; i < listItems.length; i++) {
+            var placeName = listItems[i].textContent.toLowerCase();
+            if (placeName.includes(input)) {
+                listItems[i].style.display = "";
+            } else {
+                listItems[i].style.display = "none";
+            }
+        }
+    };
+
+    // Function to Show or Hide Marker When a Place is Clicked
+    window.togglePlaceMarker = function (placeName) {
+        var placeKey = placeName.toLowerCase();
+        var placeData = markers[placeKey];
+
+        if (placeData) {
+            if (placeData.visible) {
+                map.removeLayer(placeData.marker); // Hide the marker
+                placeData.visible = false;
+            } else {
+                placeData.marker.addTo(map); // Show the marker
+                map.setView(placeData.marker.getLatLng(), 18);
+                placeData.marker.openPopup();
+                placeData.visible = true;
+            }
+        }
+    };
+
+    // Enable Click-Based Routing
+    map.on('click', function(e) {
+        if (!routingEnabled) return;
+
+        var latlng = e.latlng;
+        if (destinationMarker) {
+            destinationMarker.setLatLng(latlng).bindPopup('Destination').openPopup();
+        } else {
+            destinationMarker = L.marker(latlng, { icon: redIcon })
+                .addTo(map)
+                .bindPopup('Destination').openPopup();
+        }
+
+        if (currentLatLng) {
+            routingControl.setWaypoints([
+                L.latLng(currentLatLng[0], currentLatLng[1]),
+                L.latLng(latlng.lat, latlng.lng)
+            ]);
+        } else {
+            alert('Your current location is not available.');
+        }
+    });
+
+    // Routing Control for Navigation
+    routingControl = L.Routing.control({
+        waypoints: [],
+        router: L.Routing.osrmv1({
+            serviceUrl: 'https://router.project-osrm.org/route/v1'
+        }),
+        routeWhileDragging: true,
+        showAlternatives: true,
+        addWaypoints: true,
+        draggableWaypoints: true,
+        show: false
+    }).addTo(map);
+
+    // Display Route Information
+    routingControl.on('routesfound', function(e) {
+        var route = e.routes[0];
+        var distance = (route.summary.totalDistance / 1000).toFixed(2) + ' km';
+        var duration = (route.summary.totalTime / 60).toFixed(2) + ' mins';
+
+        document.getElementById('distance').textContent = 'Distance: ' + distance;
+        document.getElementById('duration').textContent = 'Duration: ' + duration;
+        document.getElementById('routeInfo').style.display = 'block';
+    });
+
+    // Sidebar Toggle Function
+    document.addEventListener("DOMContentLoaded", function () {
+        var sidebar = document.getElementById("sidebar");
+        sidebar.classList.add("sidebar-hidden"); // Ensure it is fully hidden on load
+    });
+
+    window.toggleSidebar = function () {
+        var sidebar = document.getElementById("sidebar");
+        var openButton = document.getElementById("openSidebar");
+
+        if (sidebar.classList.contains("sidebar-visible")) {
+            sidebar.classList.remove("sidebar-visible");
+            sidebar.classList.add("sidebar-hidden");
+            openButton.style.opacity = "1"; // Show button
+            openButton.style.pointerEvents = "auto"; // Enable button
+        } else {
+            sidebar.classList.remove("sidebar-hidden");
+            sidebar.classList.add("sidebar-visible");
+            openButton.style.opacity = "0"; // Hide button when sidebar opens
+            openButton.style.pointerEvents = "none"; // Disable button when sidebar opens
+        }
+    };
+}
+
+
+
+
+        function updateLocation(lat, lng) {
+            currentLatLng = [lat, lng];
+
+            if (userMarker) {
+                userMarker.setLatLng(currentLatLng).bindPopup('You are here');
+            } else {
+                userMarker = L.marker(currentLatLng, {icon: L.icon({
+                    iconUrl: 'https://www.google.com/mapfiles/ms/icons/blue-dot.png',
+                    iconSize: [50, 50]
+                })}).addTo(map).bindPopup('You are here');
+            }
+
+            if (routingEnabled && destinationMarker) {
+                routingControl.setWaypoints([
+                    L.latLng(lat, lng),
+                    destinationMarker.getLatLng()
+                ]);
+            }
+        }
+
+
+    function centerOnCurrentLocation() {
+        if (currentLatLng) {
+            map.setView(currentLatLng, 17);
+        } else {
+            alert('Location not available.');
+        }
+    }
+
+    function toggleRouting() {
+        routingEnabled = !routingEnabled;
+        if (routingEnabled) {
+            alert('Routing enabled. Click on the map to set your destination.');
+        } else {
+            routingControl.setWaypoints([]);
+            if (destinationMarker) {
+                map.removeLayer(destinationMarker);
+                destinationMarker = null;
+            }
+            document.getElementById('routeInfo').style.display = 'none';
+            alert('Routing disabled.');
+        }
+    }
+</script>
+</body>
+</html>

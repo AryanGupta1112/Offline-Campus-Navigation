@@ -1,0 +1,81 @@
+[versions]
+activityKtx = "1.9.2"
+agp = "8.6.1"
+androidxJunit = "1.2.1"
+appcompatVersion = "1.7.0"
+converterGson = "2.9.0"
+coreKtx = "1.13.1"
+espressoCoreVersion = "3.6.1"
+firebaseAuth = "23.2.0"
+firebaseBom = "33.4.0"
+firebaseBomVersion = "33.9.0"
+firebaseCore = "21.1.1"
+firebaseCrashlyticsGradle = "3.0.2"
+googleServices = "4.4.2"
+googleServicesVersion = "4.3.10"
+gradle = "8.0.2"
+gradleVersion = "8.6.1"
+gson = "2.10.1"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+appcompat = "1.6.1"
+lifecycleExtensions = "2.2.0"
+lifecycleRuntimeKtx = "2.8.6"
+lifecycleRuntimeKtxVersion = "2.6.0"
+material = "1.10.0"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
+materialVersion = "1.9.0"
+multidex = "2.0.1"
+playServicesLocation = "21.3.0"
+playServicesMaps = "19.0.0"
+retrofit = "2.9.0"
+core = "1.15.0"
+
+[libraries]
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
+appcompat-v170 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+espresso-core-v361 = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-bom-v3390 = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
+firebase-core = { module = "com.google.firebase:firebase-core", version.ref = "firebaseCore" }
+firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsGradle" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-database-ktx = { module = "com.google.firebase:firebase-database-ktx" }
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx" }
+firebase-perf-ktx = { module = "com.google.firebase:firebase-perf-ktx" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+google-services-v4310 = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+gradle-v814 = { module = "com.android.tools.build:gradle", version.ref = "gradleVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+junit-v121 = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "lifecycleExtensions" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+lifecycle-runtime-ktx-v260 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+material-v190 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+core = { group = "androidx.core", name = "core", version.ref = "core" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+
