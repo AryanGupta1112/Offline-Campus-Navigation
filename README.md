@@ -33,14 +33,15 @@ Developed and **patented (2025)** at *Manipal University Jaipur*, the app is tai
 
 ## 📸 Screenshots
 <p align="center">
-  <img src="screenshots/splash.jpg" width="200"/>
-  <img src="screenshots/login.jpg" width="200"/>
-  <img src="screenshots/dashboard.jpg" width="200"/>
+  <img src="app/src/Screenshots/1.jpg" width="200"/>
+  <img src="app/src/Screenshots/2.jpg" width="200"/>
+  <img src="app/src/Screenshots/4.jpg" width="200"/>
 </p>
 <p align="center">
-  <img src="screenshots/map_view.jpg" width="200"/>
-  <img src="screenshots/layers.jpg" width="200"/>
-  <img src="screenshots/routing.jpg" width="200"/>
+  <img src="app/src/Screenshots/5.jpg" width="200"/>
+  <img src="app/src/Screenshots/6.jpg" width="200"/>
+  <img src="app/src/Screenshots/10.jpg" width="200"/>
+  <img src="app/src/Screenshots/14.jpg" width="200"/>
 </p>
 <p align="center">
   <i>*(Additional screenshots available in the `/screenshots` folder.)*</i>
