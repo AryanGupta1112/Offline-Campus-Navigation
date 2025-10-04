@@ -31,7 +31,7 @@ Developed and **patented (2025)** at *Manipal University Jaipur*, the app is tai
 
 ---
 
-## Patent
+## Patent Published
 <p align="center">
   <img src="app/src/Screenshots/Screenshot 2025-08-06 014842.png" width="700"/>
 </p>
